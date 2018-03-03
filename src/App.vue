@@ -44,7 +44,7 @@ export default class App extends Vue {
   private routes: UIRoute[] = routes;
 
   public goTo(route: UIRoute): void {
-    router.push('/');
+    router.push(route.path);
   }
 
   public toggleMenu() {

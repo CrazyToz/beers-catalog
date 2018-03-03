@@ -6,7 +6,7 @@
     <v-container fluid grid-list-md>
         <v-layout row wrap>
         <v-flex xs12 md6 lg4 v-for="beer in beers" :key="beer.id">
-            <beer-card :beer="beer"></beer-card>
+            <beer-card :beer="beer" :favored="isCrush(beer)" v-on:crush="onCrush"></beer-card>
         </v-flex>
         </v-layout>
     </v-container>
@@ -19,6 +19,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import { $http, HttpResponse } from 'vue-resource';
 import { Beer } from '@/beers/Beer';
 import { beerService } from '@/beers/BeerRestService';
+import { beerCrushesService } from '@/beers/BeerCrushesService';
 import BeerCard from './BeerCard.vue';
 
 @Component({
@@ -44,11 +45,23 @@ export default class Catalog extends Vue {
     });
   }
 
+  private onCrush(crush: boolean, beer: Beer) {
+    if (crush === true) {
+      beerCrushesService.push(beer)
+    } else {
+      beerCrushesService.pop(beer);
+    }
+  }
+
   private onPageChange() {
     this.beers = [];
     beerService.findBeers(this.page).then((beers: Beer[]) => {
       this.beers = beers;
     });
+  }
+
+  private isCrush(beer: Beer): boolean {
+    return beerCrushesService.isCrush(beer);
   }
 }
 </script>

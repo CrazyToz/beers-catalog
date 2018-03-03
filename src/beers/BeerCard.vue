@@ -20,6 +20,11 @@
             <v-btn flat color="teal">
                 Details
             </v-btn>
+            <v-btn icon v-on:click="toggleCrush()">
+                <v-icon :color="crush ? 'red' : 'black'">
+                    favorite
+                </v-icon>
+            </v-btn>
             <v-btn icon v-on:click="showText = !showText">
                 <v-icon>
                     {{ showText ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}
@@ -44,8 +49,23 @@ export default class BeerCard extends Vue {
     @Prop({required : true})
     private beer !: Beer;
 
+    @Prop({default: false})
+    private favored !: boolean;
+
     private showText: boolean = false;
 
+    private crush : boolean = false;
+
+    public created() {
+        if (this.favored === true) {
+            this.crush = this.favored;
+        }
+    }
+
+    public toggleCrush() {
+        this.crush = !this.crush;
+        this.$emit('crush', this.crush, this.beer);
+    }
 }
 </script>
 
