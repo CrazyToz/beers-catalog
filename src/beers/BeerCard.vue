@@ -1,14 +1,36 @@
 <template>
-    <v-card color="grey lighten-2">
-        <v-card-media :src="beer.imageUrl" contain height="125px"></v-card-media>
-        <v-card-title>
-            <div>
-                <h3>{{beer.name}}</h3>
-                <div>
-                    {{beer.description}}
-                </div>
-            </div>
-        </v-card-title>
+    <v-card color="teal lighten-5">
+        <v-container fluid>
+            <v-layout row wrap>
+                <v-flex xs3>
+                    <v-card-media :src="beer.imageUrl" contain height="125px"></v-card-media>
+                </v-flex>
+                <v-flex xs9>
+                    <v-card-title>
+                        <v-layout column>
+                            <div class="headline">{{ beer.name }}</div>
+                            <div>{{ beer.tagLine }}</div>
+                        </v-layout>
+                    </v-card-title>
+                </v-flex>
+            </v-layout>
+        </v-container>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn flat color="teal">
+                Details
+            </v-btn>
+            <v-btn icon v-on:click="showText = !showText">
+                <v-icon>
+                    {{ showText ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}
+                </v-icon>
+            </v-btn>
+        </v-card-actions>
+        <v-slide-y-transition>
+          <v-card-text v-show="showText">
+              {{ beer.description    }}
+           </v-card-text>
+        </v-slide-y-transition>
     </v-card>
 </template>
 
@@ -21,6 +43,8 @@ export default class BeerCard extends Vue {
 
     @Prop({required : true})
     private beer !: Beer;
+
+    private showText: boolean = false;
 
 }
 </script>
