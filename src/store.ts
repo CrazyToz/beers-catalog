@@ -8,6 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
       beer : null as Beer | null,
+      beers: [] as Beer[],
   },
   mutations: {
     setBeer(state, beer: Beer): void {
@@ -15,6 +16,12 @@ export default new Vuex.Store({
     },
     destroyBeer(state): void {
       state.beer = null;
+    },
+    setBeers(state, beers: Beer[]): void {
+      state.beers = beers;
+    },
+    destroyBeers(state) {
+      state.beers = [];
     },
   },
   getters: {
@@ -44,6 +51,28 @@ export default new Vuex.Store({
           Promise.reject(response);
         },
       );
+    },
+    checkoutBeersWhenNeeded({state, dispatch}): PromiseLike<void> {
+      if (state.beers.length > 0) {
+        return Promise.resolve();
+      } else {
+        return dispatch('checkoutBeers');
+      }
+    },
+    checkoutBeers({commit, state}): PromiseLike<void> {
+      return beerService.findBeers(1)
+        .then((response: Beer[]) => {
+          commit('setBeers', state.beers.concat(response));
+          return beerService.findBeers(2);
+        })
+        .then((response: Beer[]) => {
+          commit('setBeers', state.beers.concat(response));
+          return beerService.findBeers(3);
+        })
+        .then((response: Beer[]) => {
+          commit('setBeers', state.beers.concat(response));
+          Promise.resolve();
+        });
     },
   },
 });

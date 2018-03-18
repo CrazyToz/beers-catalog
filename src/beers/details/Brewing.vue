@@ -95,16 +95,6 @@
           </v-list>
         </v-flex>
       </v-layout>
-      <v-layout row>
-        <v-flex xs12>
-          <section>
-            <h1 class="headline mb-4 mt-4">Tips</h1>
-              <p>
-                {{ beer.brewingTips }}
-              </p>
-          </section>
-        </v-flex>
-      </v-layout>
     </v-container>
     <v-container v-else>
       <v-layout row justify-center>

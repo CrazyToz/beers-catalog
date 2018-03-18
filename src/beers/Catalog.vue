@@ -1,14 +1,18 @@
 <template>
   <div>
-    <div class="text-xs-center">
-      <v-pagination :length="totalPages" v-model="page" color="teal" v-on:input="onPageChange()"></v-pagination>
-    </div>
-    <v-container fluid grid-list-md>
+    <v-container fluid grid-list-md v-if="beers.length > 0">
         <v-layout row wrap>
         <v-flex xs12 md6 lg4 v-for="beer in beers" :key="beer.id">
             <beer-card :beer="beer" :favored="isCrush(beer)" v-on:crush="onCrush"></beer-card>
         </v-flex>
         </v-layout>
+    </v-container>
+    <v-container v-else>
+      <v-layout row justify-center>
+        <v-flex xs2>
+          <v-progress-circular indeterminate color="teal" :size="100"></v-progress-circular>
+        </v-flex>
+      </v-layout>
     </v-container>
   </div>
 </template>
@@ -21,6 +25,7 @@ import { Beer } from '@/beers/Beer';
 import { beerService } from '@/beers/BeerRestService';
 import { beerCrushesService } from '@/beers/BeerCrushesService';
 import BeerCard from './BeerCard.vue';
+import store from '@/store';
 
 @Component({
   components: {
@@ -28,21 +33,9 @@ import BeerCard from './BeerCard.vue';
   },
 })
 export default class Catalog extends Vue {
-  
-  private beers: Beer[] = [];
 
-  /*
-   * Total page can bot be calculated because rest api do not expose the number of avilable beers
-   * #feelsBadMan
-   */
-  private totalPages: number = 3;
-
-  private page: number = 1;
-
-  public created() {
-    beerService.findBeers(this.page).then((beers: Beer[]) => {
-      this.beers = beers;
-    });
+  public get beers(): Beer[] {
+    return store.state.beers;
   }
 
   private onCrush(crush: boolean, beer: Beer) {
@@ -51,13 +44,6 @@ export default class Catalog extends Vue {
     } else {
       beerCrushesService.pop(beer);
     }
-  }
-
-  private onPageChange() {
-    this.beers = [];
-    beerService.findBeers(this.page).then((beers: Beer[]) => {
-      this.beers = beers;
-    });
   }
 
   private isCrush(beer: Beer): boolean {
