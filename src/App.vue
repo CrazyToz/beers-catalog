@@ -34,14 +34,25 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { UIRoute, routes, router } from './router';
+import { UIRoute, router } from './router';
 
 @Component
 export default class App extends Vue {
 
   private drawer: boolean = true;
 
-  private routes: UIRoute[] = routes;
+  private routes: UIRoute[] = [
+    {
+      path: '/',
+      title: 'Catalog',
+      icon: 'home',
+    },
+    {
+      path: '/crushes',
+      title: 'My crushes',
+      icon: 'favorite',
+    },
+  ];
 
   public goTo(route: UIRoute): void {
     router.push(route.path);

@@ -10,7 +10,7 @@
         </v-flex>
         </v-layout>
     </v-container>
-    </div>
+  </div>
 </template>
 
 

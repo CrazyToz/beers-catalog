@@ -5,20 +5,10 @@
                     <beer-card :beer="beer" :favored="true" v-on:crush="iDontLikeThisBeerAnymooooooore"></beer-card>
                 </v-flex>
             </v-layout>
-            <v-layout column v-show="beers.length === 0">
-                <v-flex>
-                    <div class="display-4 text-xs-center meme-text">
-                        Hey !
-                    </div>
-                </v-flex>
+            <v-layout v-show="beers.length === 0">
                 <v-flex>
                      <div class="text-xs-center">
                        <img class="meme" src="../assets/frodo-love-beer-to.jpeg">
-                    </div>
-                </v-flex>
-                <v-flex>
-                    <div class="display-2 text-xs-center meme-text">
-                         I'm sure you'll find a beer to your taste
                     </div>
                 </v-flex>
             </v-layout>
@@ -27,7 +17,7 @@
 
 <style>
     .meme {
-        width: 500px;
+        width: 600px;
     }
 
     .meme-text {

@@ -17,7 +17,7 @@
         </v-container>
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn flat color="teal">
+            <v-btn flat color="teal" append :to="'/details/' + beer.id">
                 Details
             </v-btn>
             <v-btn icon v-on:click="toggleCrush()">
